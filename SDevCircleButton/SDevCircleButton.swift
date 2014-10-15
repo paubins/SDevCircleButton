@@ -204,7 +204,7 @@ class SDevCircleButton: UIButton {
             UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                 tmpImageView.alpha = 1
                 }, completion: { (finished) -> Void in
-                    self.setDefault(image, tmpImageView: tmpImageView)
+                    self.setImage(image, tmpImageView: tmpImageView)
             })
         } else {
             super.setImage(image, forState: UIControlState.Normal)
@@ -213,7 +213,7 @@ class SDevCircleButton: UIButton {
     }
     
     
-    func setDefault(image: UIImage, tmpImageView : UIImageView) -> Void {
+    func setImage(image: UIImage, tmpImageView : UIImageView) -> Void {
         super.setImage(image, forState: UIControlState.Normal)
         tmpImageView.removeFromSuperview()
     }
