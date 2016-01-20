@@ -7,12 +7,29 @@
 //
 
 import UIKit
+import QuartzCore
 
 let SDevCircleButtonBorderWidth : CGFloat = 3.0
 
 
 class SDevCircleButton: UIButton {
-    var borderColor: UIColor!
+    var borderColor: UIColor! {
+        didSet(newValue) {
+            self.borderColor = newValue
+            self.layoutSubviews()
+        }
+    }
+    
+    override var highlighted: Bool {
+        willSet(newValue) {
+            if highlighted {
+                self.layer.borderColor = self.borderColor.colorWithAlphaComponent(1).CGColor
+                self.triggerAnimateTap()
+            } else {
+                self.layer.borderColor = self.borderColor.colorWithAlphaComponent(0.7).CGColor
+            }
+        }
+    }
     var animateTap: Bool!
     var displayShading: Bool?
     var borderSize: CGFloat!
@@ -66,26 +83,11 @@ class SDevCircleButton: UIButton {
         self.layoutSubviews()
     }
     
-    func setBorderColor(borderColor: UIColor) -> Void {
-        self.borderColor = borderColor
-        self.layoutSubviews()
-    }
-    
-    
     override func layoutSubviews() -> Void {
         super.layoutSubviews()
         self.updateMaskToBounds(self.bounds)
     }
     
-    
-    func setHighlighted(highlighted: Bool) -> Void {
-        if highlighted {
-            self.layer.borderColor = self.borderColor.colorWithAlphaComponent(1).CGColor
-            self.triggerAnimateTap()
-        } else {
-            self.layer.borderColor = self.borderColor.colorWithAlphaComponent(0.7).CGColor
-        }
-    }
 
     func updateMaskToBounds(maskBounds: CGRect) -> Void {
         var maskLayer: CAShapeLayer = CAShapeLayer()

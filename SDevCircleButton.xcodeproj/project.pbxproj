@@ -167,6 +167,7 @@
 		F206D02019EE9A6B00DC4277 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Sedat ÇİFTÇİ";
 				TargetAttributes = {
@@ -417,6 +418,7 @@
 				F206D04919EE9A6C00DC4277 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F206D04A19EE9A6C00DC4277 /* Build configuration list for PBXNativeTarget "SDevCircleButtonTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +427,7 @@
 				F206D04C19EE9A6C00DC4277 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
