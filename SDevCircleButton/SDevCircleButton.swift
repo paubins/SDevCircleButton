@@ -20,13 +20,13 @@ class SDevCircleButton: UIButton {
         }
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         willSet(newValue) {
-            if highlighted {
-                self.layer.borderColor = self.borderColor.colorWithAlphaComponent(1).CGColor
+            if isHighlighted {
+                self.layer.borderColor = self.borderColor.withAlphaComponent(1).cgColor
                 self.triggerAnimateTap()
             } else {
-                self.layer.borderColor = self.borderColor.colorWithAlphaComponent(0.7).CGColor
+                self.layer.borderColor = self.borderColor.withAlphaComponent(0.7).cgColor
             }
         }
     }
@@ -44,22 +44,22 @@ class SDevCircleButton: UIButton {
         highLightView.alpha = 0
         highLightView.backgroundColor = UIColor(white: 1, alpha: 0.5)
         
-        borderColor = UIColor.whiteColor()
+        borderColor = UIColor.white
         animateTap = true
         borderSize = SDevCircleButtonBorderWidth
         
         self.clipsToBounds = true
-        self.titleLabel?.textAlignment = NSTextAlignment.Center
-        self.titleLabel?.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        self.titleLabel?.textAlignment = NSTextAlignment.center
+        self.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         
         gradientLayerTop = CAGradientLayer()
-        gradientLayerTop.frame = CGRectMake(0, 0, frame.size.width, frame.size.height / 4)
-        gradientLayerTop.colors = [UIColor.blackColor().CGColor as AnyObject!,UIColor.blackColor().colorWithAlphaComponent(0.01).CGColor as AnyObject!]
+        gradientLayerTop.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height / 4)
+        gradientLayerTop.colors = [UIColor.black.cgColor as AnyObject!,UIColor.black.withAlphaComponent(0.01).cgColor as AnyObject!]
         
         
         gradientLayerBottom = CAGradientLayer()
-        gradientLayerBottom.frame = CGRectMake(0, frame.size.height * 3 / 4, frame.size.width, frame.size.height / 4)
-        gradientLayerBottom.colors = [UIColor.lightGrayColor().colorWithAlphaComponent(0.01).CGColor as AnyObject!, UIColor.blackColor().CGColor as AnyObject!]
+        gradientLayerBottom.frame = CGRect(x: 0, y: frame.size.height * 3 / 4, width: frame.size.width, height: frame.size.height / 4)
+        gradientLayerBottom.colors = [UIColor.lightGray.withAlphaComponent(0.01).cgColor as AnyObject!, UIColor.black.cgColor as AnyObject!]
         
         self.addSubview(highLightView)
         
@@ -85,25 +85,25 @@ class SDevCircleButton: UIButton {
     
     override func layoutSubviews() -> Void {
         super.layoutSubviews()
-        self.updateMaskToBounds(self.bounds)
+        self.updateMaskToBounds(maskBounds: self.bounds)
     }
     
 
     func updateMaskToBounds(maskBounds: CGRect) -> Void {
         let maskLayer: CAShapeLayer = CAShapeLayer()
-        let maskPath: CGPathRef = CGPathCreateWithEllipseInRect(maskBounds, nil)
+        let maskPath: CGPath = CGPath(ellipseIn: maskBounds, transform: nil)
         
         maskLayer.bounds = maskBounds
         maskLayer.path = maskPath
-        maskLayer.fillColor = UIColor.blackColor().CGColor
+        maskLayer.fillColor = UIColor.black.cgColor
         
-        let point : CGPoint = CGPointMake(maskBounds.size.width / 2, maskBounds.size.height / 2)
+        let point : CGPoint = CGPoint(x: maskBounds.size.width / 2, y: maskBounds.size.height / 2)
         maskLayer.position = point
         
         self.layer.mask = maskLayer
         
-        self.layer.cornerRadius = CGRectGetHeight(maskBounds) / 2.0
-        self.layer.borderColor = self.borderColor .colorWithAlphaComponent(0.7).CGColor
+        self.layer.cornerRadius = maskBounds.height / 2.0
+        self.layer.borderColor = self.borderColor.withAlphaComponent(0.7).cgColor
         self.layer.borderWidth = self.borderSize
         
         self.highLightView.frame = self.bounds
@@ -111,24 +111,24 @@ class SDevCircleButton: UIButton {
     }
     
     func blink() -> Void {
-        let pathFrame: CGRect = CGRectMake(-CGRectGetMidX(self.bounds), -CGRectGetMidY(self.bounds), self.bounds.size.width, self.bounds.size.height)
+        let pathFrame: CGRect = CGRect(x: -self.bounds.midX, y: -self.bounds.midY, width: self.bounds.size.width, height: self.bounds.size.height)
         let path: UIBezierPath = UIBezierPath(roundedRect: pathFrame, cornerRadius: self.layer.cornerRadius)
         
-        let shapePosition: CGPoint = self.superview!.convertPoint(self.center, fromView: self.superview)
+        let shapePosition: CGPoint = self.superview!.convert(self.center, from: self.superview)
         
         let circleShape: CAShapeLayer = CAShapeLayer()
-        circleShape.path = path.CGPath
+        circleShape.path = path.cgPath
         circleShape.position = shapePosition
-        circleShape.fillColor = UIColor.clearColor().CGColor
+        circleShape.fillColor = UIColor.clear.cgColor
         circleShape.opacity = 0
-        circleShape.strokeColor = self.borderColor.CGColor
+        circleShape.strokeColor = self.borderColor.cgColor
         circleShape.lineWidth = 2.0
         
         self.superview!.layer.addSublayer(circleShape)
         
         let scaleAnimation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-        scaleAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(2.0, 2.0, 1))
+        scaleAnimation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
+        scaleAnimation.fromValue = NSValue(caTransform3D: CATransform3DMakeScale(2.0, 2.0, 1))
         
         let alphaAnimation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
         alphaAnimation.fromValue = 1
@@ -139,7 +139,7 @@ class SDevCircleButton: UIButton {
         animation.duration = 0.7
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         
-        circleShape.addAnimation(animation, forKey: nil)
+        circleShape.add(animation, forKey: nil)
         
     }
     
@@ -152,29 +152,29 @@ class SDevCircleButton: UIButton {
         
         let this: SDevCircleButton = self
         
-        UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             this.highLightView.alpha = 0.0
             }, completion: nil)
         
-        let pathFrame: CGRect = CGRectMake(-CGRectGetMidX(self.bounds), -CGRectGetMidY(self.bounds), self.bounds.size.width, self.bounds.size.height)
+        let pathFrame: CGRect = CGRect(x: -self.bounds.midX, y: -self.bounds.midY, width: self.bounds.size.width, height: self.bounds.size.height)
         let path: UIBezierPath = UIBezierPath(roundedRect: pathFrame, cornerRadius: self.layer.cornerRadius)
         
-        let shapePosition: CGPoint = self.superview!.convertPoint(self.center, fromView: self.superview)
+        let shapePosition: CGPoint = self.superview!.convert(self.center, from: self.superview)
         
         let circleShape: CAShapeLayer = CAShapeLayer()
-        circleShape.path = path.CGPath
+        circleShape.path = path.cgPath
         circleShape.position = shapePosition
-        circleShape.fillColor = UIColor.clearColor().CGColor
+        circleShape.fillColor = UIColor.clear.cgColor
         circleShape.opacity = 0
-        circleShape.strokeColor = self.borderColor.CGColor
+        circleShape.strokeColor = self.borderColor.cgColor
         circleShape.lineWidth = 2.0
         
         self.superview?.layer.addSublayer(circleShape)
         
         
         let scaleAnimation: CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-        scaleAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(2.5, 2.5, 1))
+        scaleAnimation.fromValue = NSValue(caTransform3D: CATransform3DIdentity)
+        scaleAnimation.fromValue = NSValue(caTransform3D: CATransform3DMakeScale(2.5, 2.5, 1))
         
         let alphaAnimation: CABasicAnimation = CABasicAnimation(keyPath: "opacity")
         alphaAnimation.fromValue = 1
@@ -185,38 +185,36 @@ class SDevCircleButton: UIButton {
         animation.duration = 0.7
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         
-        circleShape.addAnimation(animation, forKey: nil)
-
-        
+        circleShape.add(animation, forKey: nil)
     }
     
     func setImage(image: UIImage!, animated: Bool) -> Void {
-        super.setImage(nil, forState: UIControlState.Normal)
-        super.setImage(image, forState: UIControlState.Selected)
-        super.setImage(image, forState: UIControlState.Highlighted)
+        super.setImage(nil, for: UIControlState.normal)
+        super.setImage(image, for: UIControlState.selected)
+        super.setImage(image, for: UIControlState.highlighted)
         
         if animated {
             let tmpImageView : UIImageView = UIImageView(frame: self.bounds)
             
             tmpImageView.image = image
             tmpImageView.alpha = 0
-            tmpImageView.backgroundColor = UIColor.clearColor()
-            tmpImageView.contentMode = UIViewContentMode.ScaleAspectFit
+            tmpImageView.backgroundColor = UIColor.clear
+            tmpImageView.contentMode = UIViewContentMode.scaleAspectFit
             self.addSubview(tmpImageView)
-            UIView.animateWithDuration(1.0, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                 tmpImageView.alpha = 1
                 }, completion: { (finished) -> Void in
-                    self.setImage(image, tmpImageView: tmpImageView)
+                    self.setImage(image: image, tmpImageView: tmpImageView)
             })
         } else {
-            super.setImage(image, forState: UIControlState.Normal)
+            super.setImage(image, for: UIControlState.normal)
         }
         
     }
     
     
     func setImage(image: UIImage, tmpImageView : UIImageView) -> Void {
-        super.setImage(image, forState: UIControlState.Normal)
+        super.setImage(image, for: UIControlState.normal)
         tmpImageView.removeFromSuperview()
     }
     
